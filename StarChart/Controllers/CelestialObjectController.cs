@@ -124,10 +124,30 @@ namespace StarChart.Controllers
                 _context.SaveChanges();
                 return NoContent();
             }
-            catch
+            catch (Exception)
             {
                 return BadRequest("Unable to update Record.");
             }
+        }
+
+        [HttpPatch("{id}/{name}")]
+        public IActionResult RenameObject(int id, string name)
+        {
+            try
+            {
+                CelestialObject celestialObject = _context.CelestialObjects.FirstOrDefault(i => i.Id == id);
+                if (celestialObject == null) return NotFound();
+
+                celestialObject.Name = name;
+                _context.CelestialObjects.Update(celestialObject);
+                _context.SaveChanges();
+                return NoContent();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Unable to rename Record.");
+            }
+
         }
     }
 }
