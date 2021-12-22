@@ -102,7 +102,7 @@ namespace StarChart.Controllers
                     OrbitedObjectId = celestialObject.OrbitedObjectId,
 
                 };
-                return CreatedAtRoute($"GetById/{returnObject.Id}", returnObject);
+                return CreatedAtRoute($"GetById",new { id = returnObject.Id }, returnObject);
             }
             catch
             {
