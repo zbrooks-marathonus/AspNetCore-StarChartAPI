@@ -46,7 +46,7 @@ namespace StarChart.Controllers
                 List<CelestialObject> celestialObject = _context.CelestialObjects
                         .Where(i => i.Name == name)
                         .ToList<CelestialObject>();
-                 if (celestialObject.Count() == 0) return NotFound();
+                if (!celestialObject.Any()) return NotFound();
 
                 foreach (var CelestialObject in celestialObject)
                 {
@@ -156,18 +156,18 @@ namespace StarChart.Controllers
             try
             {
                 List<CelestialObject> celestialObject = _context.CelestialObjects
-                        .Where(i => i.Id == id)
-                        .Where(i => i.OrbitedObjectId == id)
+                        .Where(i => i.Id == id || i.OrbitedObjectId == id)
                         .ToList<CelestialObject>();
-                if (celestialObject.Count() == 0) return NotFound();
+                if (!celestialObject.Any()) return NotFound();
                 _context.CelestialObjects.RemoveRange(celestialObject);
                 _context.SaveChanges();
+                return NoContent();
             }
             catch(Exception)
             {
                 return BadRequest("Unable to Delete Record");
             }
-            return NoContent();
+            
         }
     }
 }
