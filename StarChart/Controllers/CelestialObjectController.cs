@@ -24,13 +24,13 @@ namespace StarChart.Controllers
         {
             try
             {
-                CelestialObject CelObject = _context.CelestialObjects.FirstOrDefault(i => i.Id == id);
-                if (CelObject == null) return NotFound();
+                CelestialObject celestialObject = _context.CelestialObjects.FirstOrDefault(i => i.Id == id);
+                if (celestialObject == null) return NotFound();
 
-                CelObject.Satellites = _context.CelestialObjects
-                                        .Where(i => i.OrbitedObjectId == CelObject.Id)
+                celestialObject.Satellites = _context.CelestialObjects
+                                        .Where(i => i.OrbitedObjectId == celestialObject.Id)
                                         .ToList<CelestialObject>();
-                return Ok(CelObject);
+                return Ok(celestialObject);
             }
             catch (Exception)
             {
@@ -43,19 +43,19 @@ namespace StarChart.Controllers
         {
             try
             {
-                List<CelestialObject> CelObject = _context.CelestialObjects
+                List<CelestialObject> celestialObject = _context.CelestialObjects
                         .Where(i => i.Name == name)
                         .ToList<CelestialObject>();
-                 if (CelObject.Count() == 0) return NotFound();
+                 if (celestialObject.Count() == 0) return NotFound();
 
-                foreach (var CelestialObject in CelObject)
+                foreach (var CelestialObject in celestialObject)
                 {
                     CelestialObject.Satellites = _context.CelestialObjects
                         .Where(i => i.OrbitedObjectId == CelestialObject.Id)
                         .ToList<CelestialObject>();
                 }
 
-                return Ok(CelObject);
+                return Ok(celestialObject);
             }
             catch (Exception)
             {
@@ -148,6 +148,26 @@ namespace StarChart.Controllers
                 return BadRequest("Unable to rename Record.");
             }
 
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                List<CelestialObject> celestialObject = _context.CelestialObjects
+                        .Where(i => i.Id == id)
+                        .Where(i => i.OrbitedObjectId == id)
+                        .ToList<CelestialObject>();
+                if (celestialObject.Count() == 0) return NotFound();
+                _context.CelestialObjects.RemoveRange(celestialObject);
+                _context.SaveChanges();
+                return NoContent();
+            }
+            catch(Exception)
+            {
+                return BadRequest("Unable to Delete Record");
+            }
         }
     }
 }
