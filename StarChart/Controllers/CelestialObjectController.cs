@@ -162,12 +162,12 @@ namespace StarChart.Controllers
                 if (celestialObject.Count() == 0) return NotFound();
                 _context.CelestialObjects.RemoveRange(celestialObject);
                 _context.SaveChanges();
-                return NoContent();
             }
             catch(Exception)
             {
                 return BadRequest("Unable to Delete Record");
             }
+            return NoContent();
         }
     }
 }
