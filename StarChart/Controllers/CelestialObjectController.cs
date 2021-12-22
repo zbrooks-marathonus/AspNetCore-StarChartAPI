@@ -110,7 +110,7 @@ namespace StarChart.Controllers
             }
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody]CelestialObject celestialObject)
         {
             try
