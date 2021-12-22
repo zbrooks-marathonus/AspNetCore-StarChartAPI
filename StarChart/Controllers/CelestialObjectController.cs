@@ -109,5 +109,25 @@ namespace StarChart.Controllers
                 return BadRequest("Unable to Add Object");
             }
         }
+
+        [HttpPut("{id:int}")]
+        public IActionResult Update(int id, [FromBody]CelestialObject celestialObject)
+        {
+            try
+            {
+                CelestialObject oldObject = _context.CelestialObjects.FirstOrDefault(i => i.Id == id);
+                if (oldObject == null) return NotFound();
+
+                oldObject.Name = celestialObject.Name;
+                oldObject.OrbitalPeriod = celestialObject.OrbitalPeriod;
+                _context.CelestialObjects.Update(oldObject);
+                _context.SaveChanges();
+                return NoContent();
+            }
+            catch
+            {
+                return BadRequest("Unable to update Record.");
+            }
+        }
     }
 }
