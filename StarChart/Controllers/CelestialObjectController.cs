@@ -86,23 +86,23 @@ namespace StarChart.Controllers
         }
 
         [HttpPost]        
-        public IActionResult Create([FromBody]CelestialObject cObject)
+        public IActionResult Create([FromBody]CelestialObject celestialObject)
         {
             try
             {
-                _context.CelestialObjects.Add(cObject);
+                _context.CelestialObjects.Add(celestialObject);
                 _context.SaveChanges();
 
                 CelestialObject returnObject = new CelestialObject
                 {
-                    Id = cObject.Id,
-                    Name = cObject.Name,
-                    Satellites = cObject.Satellites,
-                    OrbitalPeriod = cObject.OrbitalPeriod,
-                    OrbitedObjectId = cObject.OrbitedObjectId,
+                    Id = celestialObject.Id,
+                    Name = celestialObject.Name,
+                    Satellites = celestialObject.Satellites,
+                    OrbitalPeriod = celestialObject.OrbitalPeriod,
+                    OrbitedObjectId = celestialObject.OrbitedObjectId,
 
                 };
-                return CreatedAtRoute($"GetById/{cObject.Id}", returnObject);
+                return CreatedAtRoute($"GetById/{returnObject.Id}", returnObject);
             }
             catch
             {
